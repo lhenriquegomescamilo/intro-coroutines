@@ -22,7 +22,7 @@ fun List<User>.aggregate(): List<User> {
         else this.groupBy { it.login }.entries.parallelStream()
 
     return streams
-        .map { groupOgUser -> User(groupOgUser.key, groupOgUser.value.sumBy { it.contributions }) }
+        .map { groupOfUser -> User(groupOfUser.key, groupOfUser.value.sumBy { it.contributions }) }
         .sorted { o1, o2 -> o2.contributions - o1.contributions }
         .collect(Collectors.toList())
 }
