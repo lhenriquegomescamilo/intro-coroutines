@@ -1,6 +1,7 @@
 package tasks
 
 import contributors.User
+import java.util.stream.Collectors
 
 /*
 TODO: Write aggregation code.
@@ -14,5 +15,17 @@ TODO: Write aggregation code.
  The corresponding test can be found in test/tasks/AggregationKtTest.kt.
  You can use 'Navigate | Test' menu action (note the shortcut) to navigate to the test.
 */
-fun List<User>.aggregate(): List<User> =
-    this
+fun List<User>.aggregate(): List<User> {
+
+    val streams =
+        if (this.size < 100_000) this.groupBy { it.login }.entries.stream()
+        else this.groupBy { it.login }.entries.parallelStream()
+
+    return streams
+        .map { groupOgUser -> User(groupOgUser.key, groupOgUser.value.sumBy { it.contributions }) }
+        .sorted { o1, o2 -> o2.contributions - o1.contributions }
+        .collect(Collectors.toList())
+}
+
+
+private fun sumQuantityOfContributions() = { acc: Int, user: User -> acc + user.contributions }
