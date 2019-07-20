@@ -26,6 +26,3 @@ fun List<User>.aggregate(): List<User> {
         .sorted { o1, o2 -> o2.contributions - o1.contributions }
         .collect(Collectors.toList())
 }
-
-
-private fun sumQuantityOfContributions() = { acc: Int, user: User -> acc + user.contributions }
