@@ -3,7 +3,6 @@ package contributors
 import contributors.Contributors.LoadingStatus.*
 import contributors.Variant.*
 import kotlinx.coroutines.*
-import kotlinx.coroutines.swing.Swing
 import tasks.*
 import java.awt.event.ActionListener
 import javax.swing.SwingUtilities
@@ -59,11 +58,11 @@ interface Contributors: CoroutineScope {
                 updateResults(users, startTime)
             }
             BACKGROUND -> { // Blocking a background thread
-                loadContributorsBackground(service, req) { users ->
+                loadContributorsBackground(service = service, req = req, updateResults = { users ->
                     SwingUtilities.invokeLater {
                         updateResults(users, startTime)
                     }
-                }
+                })
             }
             CALLBACKS -> { // Using callbacks
                 loadContributorsCallbacks(service, req) { users ->
