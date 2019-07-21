@@ -14,7 +14,7 @@ suspend fun loadContributorsConcurrent(service: GitHubService, req: RequestData)
 
     val allDeferred = repositories
         .map { repo ->
-            async(Dispatchers.Default) {
+            async(Dispatchers.Main) {
                 service.getRepoContributors(req.org, repo.name)
                     .also { logUsers(repo, it) }
                     .bodyList()
