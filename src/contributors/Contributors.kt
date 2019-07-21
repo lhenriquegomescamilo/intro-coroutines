@@ -73,7 +73,7 @@ interface Contributors: CoroutineScope {
             }
             SUSPEND -> { // Using coroutines
                 launch {
-                    val users = loadContributorsSuspend(service, req)
+                    val users = loadContributorsSuspend(req)
                     updateResults(users, startTime)
                 }.setUpCancellation()
             }
