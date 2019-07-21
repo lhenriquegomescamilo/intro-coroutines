@@ -15,14 +15,7 @@ TODO: Write aggregation code.
  The corresponding test can be found in test/tasks/AggregationKtTest.kt.
  You can use 'Navigate | Test' menu action (note the shortcut) to navigate to the test.
 */
-fun List<User>.aggregate(): List<User> {
-
-    val streams =
-        if (this.size < 100_000) this.groupBy { it.login }.entries.stream()
-        else this.groupBy { it.login }.entries.parallelStream()
-
-    return streams
+fun List<User>.aggregate(): List<User> = groupBy { it.login }.entries.stream()
         .map { groupOfUser -> User(groupOfUser.key, groupOfUser.value.sumBy { it.contributions }) }
         .sorted { o1, o2 -> o2.contributions - o1.contributions }
         .collect(Collectors.toList())
-}
