@@ -16,7 +16,6 @@ suspend fun loadContributorsNotCancellable(service: GitHubService, req: RequestD
         .map { repo ->
             GlobalScope.async {
                 log("starting loading for ${repo.name}")
-                delay(3_000)
                 service.getRepoContributors(req.org, repo.name)
                     .also { logUsers(repo, it) }
                     .bodyList()
